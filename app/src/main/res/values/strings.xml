@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">B Agent</string>
+    <string name="accessibility_service_label">B Agent Accessibility Control</string>
+    <string name="accessibility_service_desc">Allows B Agent to inspect and interact with on-screen UI nodes for automation.</string>
+    <string name="notification_channel_name">B Agent runtime</string>
+    <string name="notification_channel_desc">Ongoing agent task status and controls.</string>
+    <string name="action_stop">Stop</string>
+    <string name="notification_channel_tasks">Agent Tasks</string>
+    <string name="notification_channel_events">Agent Events</string>
+    <string name="notification_task_running">Task running</string>
+    <string name="notification_open">Open</string>
+    <string name="notification_pause">Pause</string>
+    <string name="notification_stop">Stop</string>
+    <string name="notification_resume">Resume</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_agent">Agent</string>
+    <string name="nav_files">Files</string>
+    <string name="nav_terminal">Terminal</string>
+    <string name="nav_tasks">Tasks</string>
+    <string name="nav_projects">Projects</string>
+    <string name="nav_sessions">Sessions</string>
+    <string name="nav_extensions">Extensions</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_diagnostics">Diagnostics</string>
+
+    <!-- Bootstrap -->
+    <string name="boot_title">Preparing B Agent</string>
+    <string name="boot_subtitle">Initializing runtime, environment and capabilities.</string>
+    <string name="boot_db">Database</string>
+    <string name="boot_env">Environment scan</string>
+    <string name="boot_caps">Capabilities</string>
+    <string name="boot_perms">Permissions</string>
+    <string name="boot_providers">Providers</string>
+    <string name="boot_tools">Tools</string>
+    <string name="boot_diag">Diagnostics</string>
+
+    <!-- Home -->
+    <string name="home_status">Status</string>
+    <string name="home_active_task">Active task</string>
+    <string name="home_workspace">Workspace</string>
+    <string name="home_provider">Provider</string>
+    <string name="home_model">Model</string>
+    <string name="home_capabilities">Capabilities</string>
+    <string name="home_recent_projects">Recent projects</string>
+    <string name="home_recent_sessions">Recent sessions</string>
+    <string name="home_quick">Quick actions</string>
+    <string name="home_start_agent">Start Agent</string>
+    <string name="home_open_terminal">Open Terminal</string>
+    <string name="home_open_files">Open Files</string>
+    <string name="home_new_project">New project</string>
+    <string name="home_open_diagnostics">Diagnostics</string>
+    <string name="home_no_provider">No provider configured</string>
+    <string name="home_select">Select</string>
+
+    <!-- Agent screen -->
+    <string name="agent_title">Agent</string>
+    <string name="agent_input_hint">Instruct the agent…</string>
+    <string name="agent_send">Send</string>
+    <string name="agent_stop">Stop</string>
+    <string name="agent_pause">Pause</string>
+    <string name="agent_resume">Resume</string>
+    <string name="agent_state_idle">Idle</string>
+    <string name="agent_state_thinking">Thinking…</string>
+    <string name="agent_state_planning">Planning…</string>
+    <string name="agent_state_waiting_permission">Waiting for permission</string>
+    <string name="agent_state_executing">Executing tool</string>
+    <string name="agent_state_waiting_process">Waiting for process</string>
+    <string name="agent_state_observing">Observing</string>
+    <string name="agent_state_recovering">Recovering</string>
+    <string name="agent_state_paused">Paused</string>
+    <string name="agent_state_completed">Completed</string>
+    <string name="agent_state_failed">Failed</string>
+    <string name="agent_state_cancelled">Cancelled</string>
+    <string name="agent_state_blocked">Blocked</string>
+    <string name="agent_permission_title">Permission required</string>
+    <string name="agent_permission_allow">Allow</string>
+    <string name="agent_permission_deny">Deny</string>
+    <string name="agent_permission_allow_once">Allow once</string>
+    <string name="agent_permission_allow_session">Allow this session</string>
+    <string name="agent_permission_always">Always allow</string>
+    <string name="agent_new_task">New task</string>
+    <string name="agent_welcome">Instruct B Agent to work on projects, files, terminals and Android itself.</string>
+    <string name="agent_model">Model</string>
+    <string name="agent_plan">Plan</string>
+    <string name="agent_no_session">Start a session to begin.</string>
+
+    <!-- Terminal screen -->
+    <string name="terminal_title">Terminal</string>
+    <string name="terminal_placeholder">Enter a command…</string>
+    <string name="terminal_run">Run</string>
+    <string name="terminal_clear">Clear</string>
+    <string name="terminal_stop">Stop process</string>
+    <string name="terminal_cwd">Working directory</string>
+    <string name="terminal_backend">Backend</string>
+    <string name="terminal_processes">Processes</string>
+    <string name="terminal_no_backend">No terminal backend available.</string>
+
+    <!-- Files screen -->
+    <string name="files_title">Files</string>
+    <string name="files_search">Search</string>
+    <string name="files_new_file">New file</string>
+    <string name="files_new_folder">New folder</string>
+    <string name="files_upload">Import</string>
+    <string name="files_rename">Rename</string>
+    <string name="files_delete">Delete</string>
+    <string name="files_copy">Copy</string>
+    <string name="files_move">Move</string>
+    <string name="files_open">Open</string>
+    <string name="files_share">Share</string>
+    <string name="files_name">Name</string>
+    <string name="files_size">Size</string>
+    <string name="files_modified">Modified</string>
+    <string name="files_hidden">Show hidden</string>
+    <string name="files_root">Root</string>
+
+    <!-- Editor -->
+    <string name="editor_title">Editor</string>
+    <string name="editor_undo">Undo</string>
+    <string name="editor_redo">Redo</string>
+    <string name="editor_search">Search</string>
+    <string name="editor_replace">Replace</string>
+    <string name="editor_save">Save</string>
+    <string name="editor_go_to_line">Go to line</string>
+
+    <!-- Projects -->
+    <string name="projects_title">Projects</string>
+    <string name="projects_new">New project</string>
+    <string name="projects_name">Project name</string>
+    <string name="projects_type">Type</string>
+    <string name="projects_root">Root</string>
+    <string name="projects_rules">Rules</string>
+    <string name="projects_memory">Memory</string>
+    <string name="projects_env">Environment</string>
+    <string name="projects_tools">Tools</string>
+
+    <!-- Sessions -->
+    <string name="sessions_title">Sessions</string>
+    <string name="sessions_new">New session</string>
+    <string name="sessions_continue">Continue</string>
+    <string name="sessions_delete">Delete</string>
+
+    <!-- Extensions -->
+    <string name="extensions_title">Extensions</string>
+    <string name="extensions_tab_installed">Installed</string>
+    <string name="extensions_tab_tools">Tools</string>
+    <string name="extensions_tab_skills">Skills</string>
+    <string name="extensions_tab_plugins">Plugins</string>
+    <string name="extensions_tab_mcp">MCP</string>
+    <string name="extensions_tab_providers">Providers</string>
+    <string name="extensions_tab_runtimes">Runtimes</string>
+    <string name="extensions_install">Install</string>
+    <string name="extensions_enable">Enable</string>
+    <string name="extensions_disable">Disable</string>
+    <string name="extensions_configure">Configure</string>
+    <string name="extensions_remove">Remove</string>
+    <string name="extensions_update">Update</string>
+    <string name="extensions_status">Status</string>
+    <string name="extensions_version">Version</string>
+    <string name="extensions_dependencies">Dependencies</string>
+    <string name="extensions_permissions">Permissions</string>
+    <string name="extensions_logs">Logs</string>
+    <string name="extensions_source_uri_hint">Paste a manifest URL or JSON for an extension.</string>
+    <string name="extensions_blank_state">No items yet. Extensions keep B Agent truly dynamic.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_general">General</string>
+    <string name="settings_storage">Storage</string>
+    <string name="settings_permissions">Permissions</string>
+    <string name="settings_providers">AI providers</string>
+    <string name="settings_agent">Agent behavior</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_about">About</string>
+    <string name="settings_api_keys">API keys (encrypted)</string>
+    <string name="settings_max_iterations">Maximum iterations</string>
+    <string name="settings_max_parallel">Maximum parallel tasks</string>
+    <string name="settings_command_timeout">Command timeout (s)</string>
+    <string name="settings_task_timeout">Task timeout (min)</string>
+    <string name="settings_retry">Retry count</string>
+    <string name="settings_auto_approve">Automatic approvals</string>
+    <string name="settings_background_exec">Background execution</string>
+    <string name="settings_context_budget">Context budget (tokens)</string>
+    <string name="settings_log_level">Logging level</string>
+    <string name="settings_debug">Debug mode</string>
+    <string name="settings_provider_fallback">Provider fallback</string>
+    <string name="settings_storage_location">Storage location</string>
+    <string name="settings_export">Export data</string>
+    <string name="settings_import">Import data</string>
+    <string name="settings_backup">Backup</string>
+
+    <!-- Diagnostics -->
+    <string name="diag_title">Diagnostics</string>
+    <string name="diag_pass">PASS</string>
+    <string name="diag_warning">WARNING</string>
+    <string name="diag_failed">FAIL</string>
+    <string name="diag_fix">FIX</string>
+    <string name="diag_run">Run checks</string>
+
+    <!-- Common -->
+    <string name="common_cancel">Cancel</string>
+    <string name="common_ok">OK</string>
+    <string name="common_save">Save</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_close">Close</string>
+    <string name="common_loading">Loading…</string>
+    <string name="common_empty">Nothing here yet.</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_search">Search</string>
+    <string name="common_enabled">Enabled</string>
+    <string name="common_disabled">Disabled</string>
+    <string name="common_available">Available</string>
+    <string name="common_unavailable">Unavailable</string>
+    <string name="common_name">Name</string>
+    <string name="common_description">Description</string>
+    <string name="common_add">Add</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_default">Default</string>
+    <string name="common_error">Error</string>
+</resources>

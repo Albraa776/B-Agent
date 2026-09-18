@@ -1,0 +1,4266 @@
+# B AGENT — MASTER BUILD SPECIFICATION
+
+## Build a complete Android-native autonomous AI Agent
+
+You are not building a chatbot.
+
+You are not building a UI mockup.
+
+You are not building a frontend for a remote AI.
+
+You are not building a simplified AI assistant.
+
+You are building a COMPLETE, REAL, INSTALLABLE, ANDROID-NATIVE AUTONOMOUS AI AGENT called:
+
+# B Agent
+
+The final deliverable MUST be a production-oriented Android application that can actually be compiled, installed, launched, configured, and used on a real Android device.
+
+The application should be conceptually comparable to modern coding/computer agents such as OpenCode, Claude Code, Codex CLI, Gemini CLI, and similar agentic developer systems, while adapting the architecture to Android's actual security and operating-system constraints.
+
+The goal is to create the strongest practical general-purpose AI Agent possible on Android.
+
+Do not intentionally simplify the architecture merely to make development easier.
+
+If a feature requires additional dependencies, runtimes, binaries, libraries, services, or optional components, design the system to install/configure them automatically when legally and technically possible.
+
+If Android prevents a capability, detect that limitation honestly and implement the strongest available fallback.
+
+============================================================
+0. NON-NEGOTIABLE REQUIREMENTS
+==============================
+
+The final application MUST:
+
+* be named "B Agent"
+* have a professional application icon designed specifically for B Agent
+* support Android phones
+* support tablets and foldables where practical
+* support Arabic RTL
+* support English LTR
+* be capable of running the Agent in the background
+* persist Agent sessions
+* support long-running tasks
+* support cancellation
+* support pause/resume
+* support automatic recovery
+* support multiple AI providers
+* support tool calling
+* support autonomous execution
+* support filesystem operations
+* support terminal/process execution
+* support project workspaces
+* support Git
+* support code editing
+* support file diffs
+* support project memory
+* support agent memory
+* support MCP-style tools
+* support installable skills
+* support installable plugins
+* support dynamically installable tools
+* support dynamically removable tools
+* support dynamically configurable Agent rules
+* support user-defined system prompts/rules
+* support configurable permissions
+* support background execution
+* support notifications for long-running tasks
+* support real logs
+* support crash recovery
+* support real error handling
+* support automatic environment detection
+* support capability discovery
+* support dependency management
+* support optional Termux integration
+* support optional Accessibility automation
+* support optional elevated/root backend where available
+* never falsely claim capabilities the OS has not granted
+
+The application must be REAL.
+
+No fake terminal.
+
+No fake command output.
+
+No fake file operations.
+
+No fake progress.
+
+No fake AI responses.
+
+No hardcoded demo responses.
+
+No placeholder implementations.
+
+No "coming soon" core features.
+
+No TODOs for core functionality.
+
+============================================================
+
+1. PRODUCT PHILOSOPHY
+   ============================================================
+
+B Agent is an AI operating environment for Android.
+
+The AI is not merely a conversation partner.
+
+The AI should be able to:
+
+OBSERVE
+→ THINK
+→ PLAN
+→ ACT
+→ OBSERVE RESULT
+→ VERIFY
+→ CORRECT
+→ CONTINUE
+
+The Agent should operate through explicit tools.
+
+Never allow the model to directly manipulate the operating system without going through validated tool interfaces.
+
+Architecture:
+
+USER
+↓
+B AGENT UI
+↓
+SESSION MANAGER
+↓
+AGENT RUNTIME
+↓
+CONTEXT ENGINE
+↓
+PLANNER / REASONER
+↓
+TOOL ROUTER
+↓
+CAPABILITY MANAGER
+↓
+TOOL EXECUTION
+↓
+ANDROID / LINUX ENVIRONMENT
+↓
+OBSERVATION
+↓
+AGENT RUNTIME
+↓
+NEXT ACTION
+
+============================================================
+2. APPLICATION IDENTITY
+=======================
+
+Application name:
+
+B Agent
+
+Use a clean, professional brand identity.
+
+Do not use generic "AI brain" iconography.
+
+Create an icon that communicates:
+
+* Agent
+* execution
+* intelligence
+* developer tooling
+* automation
+
+The icon must remain recognizable at small Android launcher sizes.
+
+Provide adaptive icon support.
+
+Include:
+
+* foreground
+* background
+* monochrome icon where supported
+* launcher icon
+* notification icon
+
+Do not use copyrighted third-party logos.
+
+============================================================
+3. TECHNOLOGY STACK
+===================
+
+Preferred stack:
+
+Kotlin
+
+Jetpack Compose
+
+Android Jetpack
+
+Coroutines
+
+Flow
+
+Room
+
+DataStore
+
+Android Keystore
+
+WorkManager where appropriate
+
+Foreground Service where required
+
+Storage Access Framework
+
+AccessibilityService
+
+Android PackageManager
+
+Intent APIs
+
+Notification APIs
+
+Network security configuration
+
+Use modern Android architecture.
+
+Separate:
+
+UI
+
+Domain
+
+Data
+
+Agent Core
+
+Tool Runtime
+
+Platform Layer
+
+Persistence
+
+Security
+
+Networking
+
+Plugin System
+
+============================================================
+4. PROJECT STRUCTURE
+====================
+
+Use a scalable multi-module architecture.
+
+Suggested structure:
+
+BAgent/
+│
+├── app/
+│
+├── core/
+│   ├── common/
+│   ├── model/
+│   ├── database/
+│   ├── network/
+│   ├── security/
+│   ├── logging/
+│   └── platform/
+│
+├── agent/
+│   ├── runtime/
+│   ├── planner/
+│   ├── context/
+│   ├── memory/
+│   ├── permissions/
+│   ├── sessions/
+│   └── orchestration/
+│
+├── tools/
+│   ├── filesystem/
+│   ├── terminal/
+│   ├── git/
+│   ├── android/
+│   ├── accessibility/
+│   ├── network/
+│   ├── media/
+│   └── process/
+│
+├── providers/
+│   ├── openai/
+│   ├── anthropic/
+│   ├── gemini/
+│   ├── openrouter/
+│   └── openai-compatible/
+│
+├── plugins/
+│
+├── skills/
+│
+├── mcp/
+│
+└── feature/
+├── chat/
+├── terminal/
+├── explorer/
+├── editor/
+├── sessions/
+├── settings/
+├── permissions/
+├── plugins/
+├── skills/
+├── providers/
+└── diagnostics/
+
+Modify this structure if a technically superior architecture is discovered.
+
+Do not create unnecessary complexity without purpose.
+
+============================================================
+5. AGENT CORE
+=============
+
+Create a standalone Agent Core independent of Compose UI.
+
+The Agent Core must be usable by:
+
+* Android UI
+* background service
+* future CLI
+* future remote client
+* testing environment
+
+Core interfaces:
+
+AgentRuntime
+
+AgentSession
+
+AgentTask
+
+AgentPlanner
+
+AgentContext
+
+AgentMemory
+
+ToolRegistry
+
+ToolExecutor
+
+PermissionManager
+
+CapabilityManager
+
+ProviderManager
+
+ProcessManager
+
+WorkspaceManager
+
+PluginManager
+
+SkillManager
+
+McpManager
+
+============================================================
+6. REAL AGENT LOOP
+==================
+
+Implement a real iterative agent loop.
+
+Pseudo-flow:
+
+while task_not_finished:
+
+```
+observe_environment()
+
+build_context()
+
+ask_model()
+
+validate_model_response()
+
+if tool_call:
+    validate_tool()
+    check_permission()
+    execute_tool()
+    capture_result()
+    add_observation()
+    continue
+
+if final_answer:
+    verify_completion()
+    finish()
+```
+
+The Agent must be able to perform hundreds of tool interactions when required.
+
+Do not impose an arbitrary low number of steps.
+
+Make maximum iterations configurable.
+
+Provide safeguards against infinite loops.
+
+Example defaults:
+
+maximum_iterations:
+100
+
+maximum_same_action_retries:
+5
+
+maximum_tool_runtime:
+configurable
+
+maximum_session_runtime:
+configurable
+
+============================================================
+7. AGENT STATES
+===============
+
+Implement:
+
+IDLE
+
+THINKING
+
+PLANNING
+
+WAITING_FOR_PERMISSION
+
+EXECUTING_TOOL
+
+WAITING_FOR_PROCESS
+
+OBSERVING
+
+RECOVERING
+
+PAUSED
+
+COMPLETED
+
+FAILED
+
+CANCELLED
+
+BLOCKED
+
+The UI must accurately reflect the real state.
+
+============================================================
+8. TOOL SYSTEM
+==============
+
+Tools are first-class objects.
+
+Every tool has:
+
+id
+
+name
+
+version
+
+description
+
+category
+
+input schema
+
+output schema
+
+permission requirements
+
+capabilities required
+
+execution backend
+
+timeout
+
+risk level
+
+enabled state
+
+configuration
+
+metadata
+
+Tools must be dynamically registered.
+
+Example:
+
+ToolRegistry.register(tool)
+
+ToolRegistry.unregister(toolId)
+
+ToolRegistry.enable(toolId)
+
+ToolRegistry.disable(toolId)
+
+ToolRegistry.updateConfiguration(toolId)
+
+============================================================
+9. CORE FILESYSTEM TOOLS
+========================
+
+Implement:
+
+list_directory
+
+read_file
+
+write_file
+
+append_file
+
+create_directory
+
+delete_file
+
+move_file
+
+copy_file
+
+rename_file
+
+file_exists
+
+file_metadata
+
+search_files
+
+search_text
+
+find_symbol
+
+find_references
+
+calculate_hash
+
+compare_files
+
+archive_file
+
+extract_archive
+
+detect_encoding
+
+detect_project
+
+read_permissions
+
+write_permissions where permitted
+
+The filesystem layer must support both:
+
+Path-based storage
+
+URI-based Storage Access Framework
+
+Never confuse paths and content URIs.
+
+============================================================
+10. WORKSPACE SYSTEM
+====================
+
+Users can create unlimited workspaces.
+
+Example:
+
+B Agent
+└── Workspaces
+├── Downloader
+├── AndroidApp
+├── PythonTools
+└── Personal
+
+Each workspace contains:
+
+workspace ID
+
+display name
+
+root URI/path
+
+project type
+
+rules
+
+memory
+
+environment
+
+tools
+
+permissions
+
+sessions
+
+ignored paths
+
+preferred provider
+
+preferred model
+
+Workspace configuration file:
+
+.bagent/
+
+or:
+
+.bagent/config.json
+
+Support project-specific rules.
+
+============================================================
+11. PROJECT INTELLIGENCE
+========================
+
+When entering a project, automatically inspect:
+
+directory structure
+
+Git repository
+
+languages
+
+frameworks
+
+build system
+
+package managers
+
+README
+
+configuration files
+
+source tree
+
+tests
+
+existing rules
+
+existing Agent memory
+
+Do not read every file blindly.
+
+Use intelligent context selection.
+
+============================================================
+12. CONTEXT ENGINE
+==================
+
+Implement intelligent context management.
+
+The Agent must never blindly upload an entire project.
+
+Context sources:
+
+current task
+
+user messages
+
+project structure
+
+relevant files
+
+search results
+
+recent modifications
+
+Git diff
+
+terminal output
+
+error traces
+
+test failures
+
+project rules
+
+Agent memory
+
+tool results
+
+Use:
+
+relevance ranking
+
+token budgeting
+
+context compression
+
+summarization
+
+file chunking
+
+large-file handling
+
+binary detection
+
+ignore rules
+
+.gitignore support
+
+============================================================
+13. MEMORY SYSTEM
+=================
+
+Implement several memory layers.
+
+A) SESSION MEMORY
+
+Current conversation.
+
+B) PROJECT MEMORY
+
+Persistent project-specific knowledge.
+
+C) USER RULES
+
+User-defined Agent behavior.
+
+D) TOOL MEMORY
+
+Tool configuration.
+
+E) TASK MEMORY
+
+Long-running task state.
+
+Memory must be editable.
+
+User can:
+
+view
+
+edit
+
+export
+
+delete
+
+disable
+
+reset
+
+Memory must never secretly contain API keys or credentials.
+
+============================================================
+14. PLANNER
+===========
+
+Implement a planning system.
+
+For complex tasks:
+
+Analyze
+
+Plan
+
+Execute
+
+Verify
+
+Finalize
+
+Example:
+
+Task:
+
+"Build an Android downloader."
+
+Agent plan:
+
+1. inspect environment
+2. inspect workspace
+3. determine available SDK
+4. create project
+5. create architecture
+6. implement downloader
+7. compile
+8. inspect errors
+9. fix
+10. test
+11. package APK
+12. verify output
+
+The plan should be visible to the user.
+
+Support:
+
+plan editing
+
+plan cancellation
+
+plan regeneration
+
+plan progress
+
+============================================================
+15. SUB-AGENTS
+==============
+
+Implement optional sub-agent architecture.
+
+Possible roles:
+
+Researcher
+
+Coder
+
+Debugger
+
+Reviewer
+
+Tester
+
+Security Reviewer
+
+Documenter
+
+Each sub-agent gets:
+
+isolated context
+
+task
+
+tools
+
+permissions
+
+budget
+
+result
+
+The parent Agent can delegate tasks.
+
+Example:
+
+MAIN AGENT
+├── Research Agent
+├── Coding Agent
+├── Testing Agent
+└── Review Agent
+
+Do not require separate LLM providers for sub-agents.
+
+Allow configurable models per role.
+
+============================================================
+16. PARALLEL TASKS
+==================
+
+Where safe, support parallel tool execution.
+
+Example:
+
+Agent can inspect:
+
+build.gradle
+
+settings.gradle
+
+AndroidManifest.xml
+
+README.md
+
+simultaneously.
+
+Do not run conflicting file modifications concurrently.
+
+Implement dependency-aware task scheduling.
+
+============================================================
+17. TERMINAL SYSTEM
+===================
+
+Create a real Terminal abstraction.
+
+Interface:
+
+TerminalBackend
+
+Methods:
+
+execute()
+
+startProcess()
+
+stopProcess()
+
+getProcess()
+
+readStdout()
+
+readStderr()
+
+sendInput()
+
+getExitCode()
+
+listProcesses()
+
+Terminal must provide:
+
+command
+
+arguments
+
+cwd
+
+environment
+
+stdout
+
+stderr
+
+exit code
+
+PID
+
+start time
+
+duration
+
+status
+
+============================================================
+18. TERMINAL BACKENDS
+=====================
+
+Implement backend architecture:
+
+NativeProcessBackend
+
+TermuxBackend
+
+RootBackend
+
+FutureCustomBackend
+
+The Agent dynamically selects the strongest available backend.
+
+Priority:
+
+Root backend
+if available and explicitly configured
+
+otherwise Termux
+
+otherwise native Android-compatible execution
+
+otherwise report limitation
+
+Do not assume a Linux desktop environment exists.
+
+============================================================
+19. TERMUX INTEGRATION
+======================
+
+Support optional Termux integration.
+
+If Termux is installed:
+
+detect it.
+
+If integration is possible:
+
+offer setup.
+
+The application should be able to use a configured Termux environment as a development runtime.
+
+Detect:
+
+Python
+
+Node
+
+Git
+
+FFmpeg
+
+Clang
+
+CMake
+
+Rust
+
+Go
+
+Java
+
+other executables
+
+Do not bundle massive runtimes unnecessarily if they can be obtained safely from the configured environment.
+
+============================================================
+20. DEPENDENCY MANAGER
+======================
+
+Create an Environment Manager.
+
+On first launch:
+
+SCAN DEVICE
+
+Determine:
+
+Android version
+
+CPU architecture
+
+ABI
+
+RAM
+
+storage
+
+available shells
+
+available runtimes
+
+available compilers
+
+available package managers
+
+Termux
+
+Git
+
+Python
+
+Node
+
+Java
+
+FFmpeg
+
+Clang
+
+CMake
+
+Rust
+
+Go
+
+ADB
+
+Accessibility
+
+All Files Access
+
+Root
+
+VPN/network state where accessible
+
+Then create:
+
+Capability Matrix
+
+Example:
+
+Python     AVAILABLE
+Git        AVAILABLE
+Node       MISSING
+FFmpeg     AVAILABLE
+Root       NOT AVAILABLE
+Accessibility AVAILABLE
+
+============================================================
+21. PRE-LAUNCH BOOTSTRAP
+========================
+
+IMPORTANT:
+
+The first-run experience MUST prepare the environment before presenting the main Agent interface.
+
+Startup:
+
+BOOTSTRAP
+
+↓
+
+Check application files
+
+↓
+
+Check database
+
+↓
+
+Check required libraries
+
+↓
+
+Check device architecture
+
+↓
+
+Check optional runtimes
+
+↓
+
+Check permissions
+
+↓
+
+Check required binaries
+
+↓
+
+Check Agent engine
+
+↓
+
+Check configured providers
+
+↓
+
+Check network if remote provider is selected
+
+↓
+
+Run diagnostics
+
+↓
+
+Only then enter MAIN UI
+
+Do not leave the user with a half-configured application.
+
+If something is optional:
+
+allow skip.
+
+If something is required for a selected feature:
+
+install/configure it before enabling that feature.
+
+Show progress and exact reason for every download.
+
+============================================================
+22. OFFLINE-FIRST DESIGN
+========================
+
+Core functionality must work offline:
+
+UI
+
+file management
+
+workspace management
+
+local sessions
+
+local logs
+
+tool registry
+
+settings
+
+memory
+
+terminal backend if available
+
+local runtimes
+
+Remote AI obviously requires network.
+
+Do not require a permanent server.
+
+============================================================
+23. AI PROVIDERS
+================
+
+Implement provider abstraction.
+
+Support:
+
+OpenAI
+
+Anthropic
+
+Google Gemini
+
+OpenRouter
+
+OpenAI-compatible APIs
+
+Custom API endpoints
+
+Local model backends
+
+Each provider has:
+
+name
+
+base URL
+
+API key
+
+model
+
+headers
+
+reasoning settings
+
+context limit
+
+timeout
+
+retry policy
+
+streaming
+
+tool calling capability
+
+vision capability
+
+cost metadata
+
+Allow multiple accounts/providers.
+
+Allow per-project provider.
+
+Allow per-agent provider.
+
+Allow per-task provider.
+
+============================================================
+24. API KEY SECURITY
+====================
+
+Use:
+
+Android Keystore
+
+encrypted local storage
+
+Never:
+
+log API keys
+
+send keys to another provider
+
+display full keys
+
+store keys in plaintext database
+
+include keys in crash reports
+
+============================================================
+25. TOOL CALLING
+================
+
+Expose strict JSON schemas to the model.
+
+Example:
+
+{
+"name": "read_file",
+"arguments": {
+"path": "..."
+}
+}
+
+Validate:
+
+schema
+
+types
+
+paths
+
+permissions
+
+risk
+
+capability
+
+before execution.
+
+Malformed tool calls must be rejected and returned to the model for correction.
+
+============================================================
+26. PERMISSION ENGINE
+=====================
+
+Create granular permission policies.
+
+Examples:
+
+READ_FILES
+WRITE_FILES
+DELETE_FILES
+EXECUTE_COMMANDS
+NETWORK_ACCESS
+INSTALL_PACKAGES
+ACCESSIBILITY_CONTROL
+SYSTEM_SETTINGS
+PROCESS_CONTROL
+ROOT_OPERATIONS
+
+Risk levels:
+
+SAFE
+
+LOW
+
+MEDIUM
+
+HIGH
+
+CRITICAL
+
+Default:
+
+read files → automatic
+
+create files → automatic
+
+modify source → configurable
+
+delete → confirmation
+
+shell → confirmation
+
+network upload → confirmation
+
+accessibility interaction → confirmation
+
+critical system operation → explicit confirmation
+
+============================================================
+27. DANGEROUS COMMAND PROTECTION
+================================
+
+Detect potentially destructive operations.
+
+Examples:
+
+rm -rf
+
+rm /
+
+mkfs
+
+dd
+
+wipe
+
+format
+
+partition manipulation
+
+boot modifications
+
+factory reset
+
+mass deletion
+
+credential deletion
+
+system modification
+
+Before execution:
+
+show exact command
+
+show working directory
+
+show likely impact
+
+request confirmation
+
+Never hide the actual command.
+
+Provide:
+
+Allow Once
+
+Allow For Session
+
+Always Allow
+
+Deny
+
+============================================================
+28. FILE DIFF SYSTEM
+====================
+
+Before important modifications:
+
+create diff.
+
+Show:
+
+added
+
+removed
+
+modified
+
+renamed
+
+deleted
+
+Allow:
+
+Accept
+
+Reject
+
+Edit
+
+Revert
+
+For safe automated sessions:
+
+allow automatic acceptance.
+
+Keep backup/version information where practical.
+
+============================================================
+29. CHECKPOINT SYSTEM
+=====================
+
+Create task checkpoints.
+
+Before major operations:
+
+save checkpoint.
+
+Checkpoint contains:
+
+files changed
+
+configuration
+
+Agent state
+
+plan
+
+session state
+
+Git state when available
+
+Allow rollback when technically possible.
+
+============================================================
+30. GIT
+=======
+
+Implement Git tools.
+
+Support:
+
+status
+
+diff
+
+log
+
+branch
+
+checkout
+
+add
+
+commit
+
+restore
+
+reset where explicitly authorized
+
+stash
+
+show
+
+grep
+
+The Agent should understand Git repositories.
+
+Before destructive Git operations:
+
+confirmation required.
+
+============================================================
+31. CODE EDITOR
+===============
+
+Build a functional mobile code editor.
+
+Features:
+
+syntax highlighting
+
+line numbers
+
+search
+
+replace
+
+undo
+
+redo
+
+save
+
+open
+
+recent files
+
+large-file handling
+
+encoding
+
+diff
+
+Go to line
+
+bracket matching
+
+indentation
+
+language detection
+
+The Agent must be able to open the file being discussed.
+
+============================================================
+32. FILE EXPLORER
+=================
+
+Create a powerful explorer.
+
+Features:
+
+tree
+
+list
+
+search
+
+sort
+
+filter
+
+hidden files
+
+Git status
+
+file type
+
+size
+
+modified time
+
+create
+
+rename
+
+copy
+
+move
+
+delete
+
+share
+
+open
+
+open with
+
+workspace shortcut
+
+============================================================
+33. ACCESSIBILITY AGENT
+=======================
+
+Implement optional Android AccessibilityService.
+
+The service must allow the Agent to inspect supported UI nodes.
+
+Tools:
+
+get_window
+
+get_nodes
+
+find_text
+
+find_content_description
+
+click
+
+long_click
+
+input_text
+
+scroll
+
+back
+
+home
+
+recents
+
+global_action
+
+The Agent must prefer semantic nodes over coordinates.
+
+When coordinates are unavoidable:
+
+validate screen state before action.
+
+Never blindly click fixed coordinates.
+
+============================================================
+34. ANDROID APP CONTROL
+=======================
+
+Where Android permits:
+
+launch application
+
+open Activity/Intent
+
+open URL
+
+open settings
+
+share content
+
+open files
+
+send supported intents
+
+inspect installed package metadata
+
+The Agent should be able to reason about installed applications.
+
+Do not bypass Android security mechanisms.
+
+============================================================
+35. ROOT BACKEND
+================
+
+Create an optional RootBackend.
+
+If root is unavailable:
+
+mark unavailable.
+
+If root is available:
+
+detect it.
+
+Do not require root.
+
+Root functionality must be isolated from normal operation.
+
+All root commands must go through the same permission/risk system.
+
+Never silently use root.
+
+============================================================
+36. PROCESS MANAGER
+===================
+
+Implement real process tracking.
+
+Track:
+
+PID
+
+command
+
+cwd
+
+status
+
+stdout
+
+stderr
+
+start time
+
+duration
+
+exit code
+
+memory where available
+
+CPU where available
+
+Allow:
+
+stop
+
+cancel
+
+restart
+
+inspect
+
+Long-running processes must survive UI navigation where Android allows.
+
+============================================================
+37. BACKGROUND AGENT
+====================
+
+This is mandatory.
+
+The Agent must support long-running tasks when the user leaves the main UI.
+
+Use:
+
+Foreground Service
+
+WorkManager
+
+notifications
+
+persistent task state
+
+Android lifecycle-aware execution
+
+Do not claim unlimited background execution.
+
+The application must gracefully handle:
+
+process death
+
+memory pressure
+
+battery restrictions
+
+service restart
+
+network loss
+
+screen off
+
+user leaving app
+
+UI recreation
+
+The Agent should resume from persisted task state whenever possible.
+
+Notification:
+
+B Agent
+Task running
+
+Current:
+Building project
+
+Progress:
+7/15
+
+[Open]
+[Pause]
+[Stop]
+
+============================================================
+38. TASK PERSISTENCE
+====================
+
+Every task must persist:
+
+task ID
+
+session ID
+
+state
+
+plan
+
+current step
+
+tool calls
+
+tool results
+
+permissions
+
+files changed
+
+process IDs when applicable
+
+errors
+
+recovery state
+
+timestamps
+
+If the app UI dies:
+
+task state must remain recoverable.
+
+============================================================
+39. CRASH RECOVERY
+==================
+
+On startup:
+
+scan unfinished tasks.
+
+If task was interrupted:
+
+show:
+
+"Interrupted task detected."
+
+Options:
+
+Resume
+
+Restart
+
+Discard
+
+The Agent must never lose an important task simply because the UI was closed.
+
+============================================================
+40. NETWORK ENGINE
+==================
+
+Implement robust networking.
+
+Features:
+
+timeouts
+
+retry
+
+exponential backoff
+
+streaming
+
+connection state
+
+rate-limit handling
+
+provider fallback
+
+request cancellation
+
+response validation
+
+If provider A fails:
+
+optionally switch to provider B if user enabled fallback.
+
+============================================================
+41. MCP SYSTEM
+==============
+
+Implement a real extensible MCP-compatible architecture where technically feasible.
+
+Users must be able to:
+
+install MCP servers/tools
+
+configure them
+
+enable/disable them
+
+remove them
+
+update them
+
+set permissions
+
+set environment variables
+
+view capabilities
+
+view logs
+
+The architecture must not require rebuilding the APK when adding a new MCP integration.
+
+============================================================
+42. SKILLS SYSTEM
+=================
+
+Create installable Agent Skills.
+
+A Skill is a package containing:
+
+skill ID
+
+name
+
+version
+
+description
+
+instructions
+
+optional tools
+
+optional assets
+
+configuration schema
+
+permissions
+
+compatibility
+
+Example:
+
+Web Research Skill
+
+Android Development Skill
+
+Python Skill
+
+Video Processing Skill
+
+Git Expert Skill
+
+The user can:
+
+install
+
+enable
+
+disable
+
+update
+
+remove
+
+configure
+
+Skills must be dynamically discovered.
+
+============================================================
+43. PLUGIN SYSTEM
+=================
+
+Create a plugin architecture.
+
+Plugins can provide:
+
+tools
+
+skills
+
+providers
+
+MCP connectors
+
+UI extensions
+
+commands
+
+workflow templates
+
+Each plugin must declare:
+
+manifest
+
+ID
+
+version
+
+author
+
+permissions
+
+dependencies
+
+provided capabilities
+
+entry points
+
+The Agent must not automatically grant dangerous permissions.
+
+============================================================
+44. DYNAMIC EXTENSION STORE
+===========================
+
+Create an internal Extensions screen.
+
+Categories:
+
+TOOLS
+
+SKILLS
+
+PLUGINS
+
+MCP
+
+PROVIDERS
+
+RUNTIMES
+
+BACKENDS
+
+Installed extensions:
+
+name
+
+version
+
+status
+
+permissions
+
+dependencies
+
+last update
+
+Actions:
+
+Enable
+
+Disable
+
+Configure
+
+Update
+
+Remove
+
+Logs
+
+Do not require application rebuild for extension changes whenever architecture permits.
+
+============================================================
+45. DATABASE
+============
+
+Use Room.
+
+Tables/entities should include at minimum:
+
+UserSettings
+
+Provider
+
+Model
+
+Workspace
+
+Session
+
+Message
+
+AgentTask
+
+AgentStep
+
+Tool
+
+ToolPermission
+
+ToolExecution
+
+Process
+
+ProjectMemory
+
+UserRule
+
+Skill
+
+Plugin
+
+McpServer
+
+ExtensionDependency
+
+Checkpoint
+
+LogEntry
+
+EnvironmentCapability
+
+NotificationTask
+
+Use migrations.
+
+Never destroy user data during normal updates.
+
+============================================================
+46. USER RULES
+==============
+
+Allow users to define global Agent rules.
+
+Examples:
+
+"Always use Kotlin."
+
+"Never modify production files without asking."
+
+"Prefer FFmpeg."
+
+"Use Arabic responses."
+
+"Do not use external network unless necessary."
+
+Allow project-specific overrides.
+
+Priority:
+
+system safety
+→ user global rules
+→ project rules
+→ task rules
+→ model suggestions
+
+============================================================
+47. AGENT CONFIGURATION
+=======================
+
+Provide advanced settings:
+
+Maximum iterations
+
+Maximum tool calls
+
+Maximum parallel tasks
+
+Command timeout
+
+Task timeout
+
+Retry count
+
+Automatic approvals
+
+Network policy
+
+File policy
+
+Deletion policy
+
+Background execution
+
+Notifications
+
+Context budget
+
+Memory behavior
+
+Model selection
+
+Provider fallback
+
+Sub-agent behavior
+
+Logging level
+
+Debug mode
+
+============================================================
+48. OBSERVABILITY
+=================
+
+Create complete Agent logs.
+
+Each action:
+
+timestamp
+
+session
+
+task
+
+agent
+
+tool
+
+arguments
+
+result
+
+duration
+
+status
+
+error
+
+approval
+
+Logs must be searchable.
+
+Sensitive information must be redacted.
+
+============================================================
+49. AGENT TRACE VIEW
+====================
+
+Create a visual execution timeline.
+
+Example:
+
+01:03:12
+✓ Task started
+
+01:03:13
+→ Inspecting workspace
+
+01:03:14
+✓ Found Android project
+
+01:03:17
+→ Reading build.gradle
+
+01:03:19
+→ Running Gradle
+
+01:03:48
+✗ Compilation failed
+
+01:03:51
+→ Analyzing error
+
+01:04:03
+→ Applying patch
+
+01:04:10
+✓ Build successful
+
+The trace must reflect real events.
+
+============================================================
+50. AUTONOMOUS MODE
+===================
+
+Modes:
+
+CHAT
+
+PLAN
+
+BUILD
+
+DEBUG
+
+REVIEW
+
+AUTONOMOUS
+
+AUTONOMOUS mode means:
+
+The Agent may continue executing tools without asking after every harmless action.
+
+It must still obey permission policies.
+
+Stop conditions:
+
+completed
+
+blocked
+
+permission required
+
+unsafe action
+
+repeated failure
+
+user cancellation
+
+resource exhaustion
+
+maximum runtime
+
+============================================================
+51. VERIFICATION ENGINE
+=======================
+
+The Agent must verify important claims.
+
+If it says:
+
+"File created."
+
+The filesystem tool must confirm it.
+
+If it says:
+
+"Build succeeded."
+
+The build command must return success.
+
+If it says:
+
+"Tests passed."
+
+Tests must actually pass.
+
+Never trust model-generated claims.
+
+============================================================
+52. SELF-REPAIR
+===============
+
+Implement:
+
+ERROR
+
+↓
+
+CLASSIFY
+
+↓
+
+DIAGNOSE
+
+↓
+
+SEARCH CONTEXT
+
+↓
+
+PATCH
+
+↓
+
+RUN
+
+↓
+
+VERIFY
+
+↓
+
+SUCCESS / RETRY
+
+Examples:
+
+compiler errors
+
+runtime errors
+
+missing dependencies
+
+permission errors
+
+network failures
+
+invalid configuration
+
+test failures
+
+The Agent should use actual error output as context.
+
+============================================================
+53. RESOURCE MANAGEMENT
+=======================
+
+Monitor:
+
+RAM
+
+storage
+
+CPU where possible
+
+battery
+
+network
+
+process count
+
+large files
+
+When resources are low:
+
+reduce concurrency
+
+pause optional tasks
+
+warn user
+
+avoid crashing
+
+Never download massive dependencies without displaying size and asking when appropriate.
+
+============================================================
+54. DOWNLOAD/INSTALL MANAGER
+============================
+
+All runtime/dependency downloads must show:
+
+name
+
+version
+
+source
+
+size
+
+download progress
+
+installation progress
+
+verification status
+
+disk space required
+
+cancel
+
+retry
+
+The system should verify downloaded artifacts where possible.
+
+Never silently download gigabytes.
+
+============================================================
+55. BOOTSTRAP MANAGER
+=====================
+
+Create:
+
+BootstrapManager
+
+Responsibilities:
+
+dependency discovery
+
+installation
+
+verification
+
+environment configuration
+
+migration
+
+database initialization
+
+tool registration
+
+extension discovery
+
+provider validation
+
+diagnostics
+
+The main Agent UI should not appear until required initialization has completed.
+
+============================================================
+56. SECURITY MODEL
+==================
+
+Treat the Agent as potentially powerful.
+
+Never trust model output.
+
+Validate every:
+
+tool
+
+path
+
+command
+
+URI
+
+network request
+
+plugin
+
+MCP server
+
+extension
+
+permission
+
+Do not execute arbitrary downloaded code automatically.
+
+Extensions must declare permissions.
+
+High-risk extensions require user approval.
+
+============================================================
+57. PLUGIN SANDBOX
+==================
+
+Where technically feasible:
+
+isolate plugin execution.
+
+Prevent plugins from automatically gaining:
+
+filesystem access
+
+network
+
+shell
+
+Accessibility
+
+root
+
+unless explicitly granted.
+
+============================================================
+58. NETWORK PRIVACY
+===================
+
+Before sending project content to a remote model:
+
+determine whether content is required.
+
+Do not send unrelated files.
+
+Show privacy controls.
+
+Allow:
+
+Never upload workspace
+
+Ask before upload
+
+Allow project upload
+
+Allow all
+
+============================================================
+59. MODEL CONTEXT PRIVACY
+=========================
+
+The Agent must know:
+
+which files are going to the model
+
+which terminal output is being sent
+
+which memory is included
+
+which tool results are included
+
+Provide a context inspector.
+
+============================================================
+60. VISION
+==========
+
+If selected LLM supports vision:
+
+allow image input.
+
+Potential sources:
+
+gallery
+
+camera
+
+screenshot
+
+project image
+
+screen capture where Android permissions allow
+
+The Agent can use vision to understand UI/screenshots.
+
+============================================================
+61. VOICE
+=========
+
+Optional voice interface.
+
+Speech:
+
+Arabic
+
+English
+
+Use speech-to-text.
+
+Voice input feeds the SAME Agent Runtime.
+
+Do not create separate logic.
+
+============================================================
+62. UI
+======
+
+The UI must look like a serious developer environment.
+
+Avoid:
+
+generic AI chatbot styling
+
+excessive gradients
+
+neon cyberpunk
+
+generic purple AI aesthetics
+
+unnecessary animations
+
+Prioritize:
+
+dark developer workspace
+
+clear typography
+
+excellent spacing
+
+compact information density
+
+terminal aesthetics
+
+professional icons
+
+responsive layouts
+
+Arabic RTL done properly
+
+============================================================
+63. MAIN NAVIGATION
+===================
+
+Provide:
+
+Home
+
+Agent
+
+Projects
+
+Files
+
+Terminal
+
+Tasks
+
+Sessions
+
+Extensions
+
+Settings
+
+Diagnostics
+
+Navigation can adapt to screen size.
+
+============================================================
+64. HOME
+========
+
+Show:
+
+B Agent
+
+Current status
+
+Active task
+
+Workspace
+
+Provider
+
+Model
+
+Capabilities
+
+Recent projects
+
+Recent sessions
+
+Quick actions
+
+Start Agent
+
+Open Terminal
+
+Open Files
+
+New Project
+
+Extensions
+
+Diagnostics
+
+============================================================
+65. AGENT SCREEN
+================
+
+Provide:
+
+message history
+
+streaming response
+
+tool activity
+
+plan
+
+current action
+
+permission requests
+
+attachments
+
+workspace
+
+model selector
+
+stop
+
+pause
+
+resume
+
+new task
+
+The user must always know what the Agent is doing.
+
+============================================================
+66. TASK SCREEN
+===============
+
+Show:
+
+task title
+
+status
+
+plan
+
+current step
+
+elapsed time
+
+tool calls
+
+processes
+
+files changed
+
+errors
+
+logs
+
+pause
+
+resume
+
+stop
+
+rollback when available
+
+============================================================
+67. TERMINAL SCREEN
+===================
+
+Real terminal.
+
+Support:
+
+command input
+
+history
+
+output streaming
+
+stderr
+
+copy
+
+clear
+
+stop
+
+process list
+
+cwd
+
+environment
+
+exit code
+
+============================================================
+68. PROJECT SCREEN
+==================
+
+Show:
+
+project tree
+
+Git status
+
+recent tasks
+
+memory
+
+rules
+
+environment
+
+tools
+
+build/test commands
+
+provider
+
+model
+
+============================================================
+69. EXTENSIONS SCREEN
+=====================
+
+Tabs:
+
+Installed
+
+Available
+
+Updates
+
+Tools
+
+Skills
+
+Plugins
+
+MCP
+
+Providers
+
+Runtimes
+
+Each extension:
+
+icon
+
+name
+
+version
+
+description
+
+permissions
+
+dependencies
+
+status
+
+Configure
+
+Enable
+
+Disable
+
+Remove
+
+============================================================
+70. DIAGNOSTICS
+===============
+
+Create a diagnostic center.
+
+Check:
+
+database
+
+filesystem
+
+terminal
+
+Termux
+
+Git
+
+Python
+
+Node
+
+Java
+
+FFmpeg
+
+network
+
+providers
+
+permissions
+
+Accessibility
+
+background execution
+
+storage
+
+battery restrictions
+
+extension system
+
+Show:
+
+PASS
+
+WARNING
+
+FAIL
+
+FIX
+
+============================================================
+71. AUTOMATIC DIAGNOSTIC REPAIR
+===============================
+
+When possible:
+
+detect problem
+
+explain
+
+offer Fix
+
+perform safe repair
+
+verify
+
+Examples:
+
+missing runtime
+
+invalid configuration
+
+permission missing
+
+database migration issue
+
+provider configuration error
+
+broken extension
+
+============================================================
+72. ANDROID PERMISSIONS
+=======================
+
+Handle modern Android permission models correctly.
+
+Support where appropriate:
+
+Storage Access Framework
+
+All Files Access
+
+Notifications
+
+Accessibility
+
+Foreground Service
+
+Network
+
+Package visibility
+
+Other required runtime/special permissions
+
+Never request unnecessary permissions.
+
+Explain why each permission is required.
+
+============================================================
+73. STORAGE
+===========
+
+The user must be able to choose where B Agent stores:
+
+workspaces
+
+projects
+
+logs
+
+exports
+
+backups
+
+extensions
+
+downloads
+
+artifacts
+
+APK outputs
+
+Do not hardcode one directory.
+
+============================================================
+74. EXPORT/IMPORT
+=================
+
+Allow exporting:
+
+sessions
+
+projects metadata
+
+Agent rules
+
+skills
+
+plugins configuration
+
+provider configuration WITHOUT secrets
+
+memory
+
+logs
+
+settings
+
+Allow importing them.
+
+Provide safe migration/versioning.
+
+============================================================
+75. BACKUP
+==========
+
+Create backup system.
+
+Backup:
+
+database
+
+settings
+
+rules
+
+memory
+
+workspace metadata
+
+extensions metadata
+
+Do not include secrets unless explicitly requested.
+
+============================================================
+76. NOTIFICATIONS
+=================
+
+Long-running tasks must provide notifications.
+
+Examples:
+
+B Agent is working
+
+Build completed
+
+Task blocked
+
+Permission required
+
+Task failed
+
+Task completed
+
+Allow notification actions:
+
+Open
+
+Pause
+
+Stop
+
+Resume
+
+============================================================
+77. BATTERY
+===========
+
+Background execution must respect Android battery restrictions.
+
+Provide a diagnostic explaining:
+
+battery optimization
+
+background restriction
+
+foreground service state
+
+Allow the user to open the appropriate settings.
+
+Do not attempt to silently bypass Android restrictions.
+
+============================================================
+78. UPDATE SYSTEM
+=================
+
+Design application updates safely.
+
+Database migrations must survive updates.
+
+Extensions must have independent versions.
+
+Tools can have independent versions.
+
+Skills can have independent versions.
+
+MCP configurations must survive application updates.
+
+============================================================
+79. TESTING
+===========
+
+Implement:
+
+unit tests
+
+integration tests
+
+tool tests
+
+database tests
+
+Agent loop tests
+
+provider tests
+
+filesystem tests
+
+permission tests
+
+process tests
+
+extension tests
+
+UI tests where appropriate
+
+Create mock LLM provider for automated tests.
+
+Never rely exclusively on manual testing.
+
+============================================================
+80. TEST ENVIRONMENT
+====================
+
+Create a test mode where dangerous tools are replaced by safe simulated environments.
+
+But production mode MUST use real tools.
+
+Never accidentally ship test mocks as production implementations.
+
+============================================================
+81. BUILD VERIFICATION
+======================
+
+Before declaring completion:
+
+run:
+
+clean build
+
+unit tests
+
+instrumentation tests where possible
+
+lint
+
+dependency checks
+
+APK generation
+
+APK install verification if environment allows
+
+launch verification
+
+database migration test
+
+basic Agent session
+
+filesystem operation
+
+terminal operation
+
+tool call
+
+provider connection
+
+background task
+
+recovery test
+
+============================================================
+82. REAL DEVICE TESTING
+=======================
+
+If a connected Android device/emulator is available:
+
+install APK
+
+launch application
+
+grant required permissions
+
+run diagnostics
+
+create workspace
+
+create file
+
+read file
+
+modify file
+
+run command
+
+run Agent task
+
+background task
+
+leave application
+
+return
+
+verify task state
+
+verify logs
+
+verify final result
+
+Fix every failure discovered.
+
+============================================================
+83. NO PRETENDING
+=================
+
+If a requested Android capability is impossible:
+
+DO NOT FAKE IT.
+
+Instead:
+
+detect
+
+explain
+
+provide strongest real alternative
+
+Example:
+
+If Android prevents direct access to another app's private data:
+
+do not claim access.
+
+If Accessibility cannot perform an action:
+
+report failure.
+
+If shell cannot execute a command:
+
+report exact error.
+
+============================================================
+84. PERFORMANCE
+===============
+
+Optimize for real Android hardware.
+
+Do not keep massive project contents in RAM.
+
+Use streaming.
+
+Use paging.
+
+Use background workers.
+
+Use bounded concurrency.
+
+Use database indexes.
+
+Use caching.
+
+Avoid memory leaks.
+
+Avoid unnecessary recomposition.
+
+============================================================
+85. LARGE PROJECT SUPPORT
+=========================
+
+The Agent should be able to work with large projects.
+
+Support:
+
+file indexing
+
+incremental search
+
+ignored paths
+
+binary filtering
+
+context chunking
+
+symbol search
+
+Git-aware context
+
+token budgeting
+
+cache invalidation
+
+============================================================
+86. LONG TASKS
+==============
+
+A task may take:
+
+seconds
+
+minutes
+
+hours
+
+The architecture must support long-running tasks.
+
+Persist everything required to resume.
+
+============================================================
+87. MULTI-AGENT ORCHESTRATION
+=============================
+
+Create an optional Orchestrator.
+
+Example:
+
+User:
+
+"Build this complete application."
+
+Orchestrator:
+
+Planner
+↓
+Researcher
+↓
+Architect
+↓
+Coder
+↓
+Tester
+↓
+Debugger
+↓
+Reviewer
+↓
+Finalizer
+
+Allow user to disable multi-agent mode.
+
+============================================================
+88. AGENT PROFILE SYSTEM
+========================
+
+Users can create Agent profiles.
+
+Examples:
+
+Developer
+
+Android Expert
+
+Python Expert
+
+Researcher
+
+System Administrator
+
+Video Engineer
+
+Each profile has:
+
+system rules
+
+tools
+
+permissions
+
+model
+
+provider
+
+skills
+
+MCP
+
+temperature/reasoning settings
+
+============================================================
+89. TOOL MARKET / REPOSITORY ARCHITECTURE
+=========================================
+
+Design extension discovery so that future repositories can be added.
+
+Do not hardcode one marketplace.
+
+Repository model:
+
+name
+
+URL
+
+type
+
+trusted state
+
+authentication
+
+index format
+
+enabled
+
+The user can add repositories manually.
+
+============================================================
+90. EXTENSION DEPENDENCIES
+==========================
+
+An extension may require:
+
+another extension
+
+runtime
+
+binary
+
+permission
+
+Android API
+
+Termux package
+
+model
+
+MCP server
+
+Before installation:
+
+resolve dependencies.
+
+Show:
+
+Required dependencies
+
+Optional dependencies
+
+Disk space
+
+Permissions
+
+Network downloads
+
+Then install.
+
+============================================================
+91. EXTENSION REMOVAL
+=====================
+
+When removing an extension:
+
+ask whether to remove:
+
+configuration
+
+data
+
+cache
+
+downloaded dependencies
+
+logs
+
+Keep user data unless explicitly deleted.
+
+============================================================
+92. CONFIGURATION DATABASE
+==========================
+
+Do not hardcode:
+
+tools
+
+skills
+
+plugins
+
+providers
+
+models
+
+MCP servers
+
+permissions
+
+Agent profiles
+
+Use database/configuration-driven registration.
+
+This allows the application to evolve without modifying the core.
+
+============================================================
+93. INTERNAL COMMAND SYSTEM
+===========================
+
+Support Agent commands such as:
+
+/help
+
+/status
+
+/model
+
+/provider
+
+/tools
+
+/skills
+
+/plugins
+
+/mcp
+
+/workspace
+
+/files
+
+/terminal
+
+/plan
+
+/tasks
+
+/sessions
+
+/memory
+
+/rules
+
+/diagnostics
+
+/permissions
+
+These commands should operate locally and predictably.
+
+============================================================
+94. USER COMMAND PALETTE
+========================
+
+Implement command palette.
+
+Search:
+
+tools
+
+files
+
+commands
+
+sessions
+
+projects
+
+extensions
+
+settings
+
+actions
+
+============================================================
+95. SEARCH
+==========
+
+Global search across:
+
+projects
+
+files
+
+sessions
+
+logs
+
+tasks
+
+extensions
+
+memory
+
+rules
+
+============================================================
+96. ERROR PRESENTATION
+======================
+
+Errors must be human-readable.
+
+Show:
+
+What happened
+
+Why
+
+Where
+
+Possible cause
+
+What B Agent tried
+
+What can be done next
+
+Technical details expandable.
+
+============================================================
+97. AGENT EXPLANATION
+=====================
+
+Do not expose hidden chain-of-thought.
+
+Instead provide concise operational reasoning:
+
+"I inspected the project and found a Gradle configuration error."
+
+"I am modifying build.gradle because the installed SDK does not match the configured version."
+
+This gives transparency without exposing private reasoning traces.
+
+============================================================
+98. ACCESSIBILITY OF THE B AGENT UI
+===================================
+
+The B Agent UI itself must support:
+
+screen readers
+
+content descriptions
+
+large fonts
+
+touch targets
+
+RTL
+
+keyboard navigation where applicable
+
+============================================================
+99. LOCALIZATION
+================
+
+Arabic must be designed natively.
+
+Do not translate English UI mechanically.
+
+Use proper Arabic developer terminology.
+
+Support RTL layouts.
+
+English must remain fully functional.
+
+Allow switching language without restarting when practical.
+
+============================================================
+100. ICONOGRAPHY
+================
+
+Use a consistent icon system.
+
+Do not use emojis as primary UI icons.
+
+Create professional launcher branding.
+
+============================================================
+101. SECURITY AUDIT
+===================
+
+Before final build:
+
+audit:
+
+API keys
+
+logs
+
+network
+
+file permissions
+
+shell execution
+
+Accessibility
+
+plugins
+
+MCP
+
+extensions
+
+database
+
+backup
+
+export
+
+IPC
+
+Intents
+
+deep links
+
+WebViews if any
+
+Ensure secrets are protected.
+
+============================================================
+102. NO UNNECESSARY CLOUD
+=========================
+
+B Agent must not require a B Agent cloud server.
+
+The Agent Core operates locally.
+
+Remote AI providers are optional.
+
+============================================================
+103. LOCAL MODEL ARCHITECTURE
+=============================
+
+Create LocalLLMProvider interface.
+
+Support future engines such as:
+
+llama.cpp
+
+MLC
+
+other Android-compatible inference engines
+
+Do not force the user to download a large model.
+
+Provide model management.
+
+============================================================
+104. MODEL MANAGER
+==================
+
+Allow:
+
+add model
+
+remove model
+
+activate model
+
+download model
+
+import model
+
+inspect model
+
+model metadata
+
+size
+
+context length
+
+vision capability
+
+tool calling capability
+
+quantization
+
+backend
+
+Do not automatically download enormous models without user confirmation.
+
+============================================================
+105. AGENT CAPABILITY MAP
+=========================
+
+Create a live capability map.
+
+Example:
+
+FILESYSTEM
+✓ Workspace access
+
+TERMINAL
+✓ Native
+✓ Termux
+
+PYTHON
+✓
+
+GIT
+✓
+
+FFMPEG
+✓
+
+ACCESSIBILITY
+✓
+
+ROOT
+✗
+
+NODE
+✗
+
+The Agent receives this capability map as environment context.
+
+============================================================
+106. SELF-AWARE AGENT
+=====================
+
+The Agent must know:
+
+what it can do
+
+what it cannot do
+
+what permissions it has
+
+what tools exist
+
+what runtimes exist
+
+what extensions exist
+
+what workspace is active
+
+what model it uses
+
+what constraints apply
+
+It must never hallucinate capabilities.
+
+============================================================
+107. AGENT TOOL DISCOVERY
+=========================
+
+At runtime:
+
+discover enabled tools
+
+discover available skills
+
+discover MCP tools
+
+discover plugin tools
+
+discover environment executables
+
+Build a dynamic tool catalog.
+
+The model only receives currently usable tools.
+
+============================================================
+108. TOOL HEALTH
+================
+
+Each tool can report:
+
+healthy
+
+degraded
+
+unavailable
+
+permission required
+
+dependency missing
+
+configuration invalid
+
+============================================================
+109. TOOL SELF-DIAGNOSTICS
+==========================
+
+Every important tool should provide:
+
+checkHealth()
+
+repair()
+
+diagnose()
+
+where technically possible.
+
+============================================================
+110. AGENT BOOT SEQUENCE
+========================
+
+On application start:
+
+1. initialize security
+2. initialize database
+3. migrate database
+4. initialize logging
+5. detect architecture
+6. detect environment
+7. detect permissions
+8. load providers
+9. load tools
+10. load skills
+11. load plugins
+12. load MCP
+13. restore unfinished tasks
+14. run health checks
+15. initialize Agent Core
+16. start background task manager
+17. open UI
+
+============================================================
+111. FINAL INSTALLABLE OUTPUT
+=============================
+
+The final project MUST produce:
+
+debug APK
+
+release APK
+
+mapping/proguard information where applicable
+
+versioned build
+
+The APK must be installable on a real Android device compatible with the declared minSdk.
+
+============================================================
+112. DEVELOPMENT EXECUTION RULES
+================================
+
+DO NOT write the entire project blindly.
+
+Build in phases.
+
+After EACH phase:
+
+1. compile
+2. run tests
+3. inspect errors
+4. fix errors
+5. compile again
+6. test again
+7. continue
+
+Never accumulate dozens of untested modules.
+
+============================================================
+113. PHASES
+===========
+
+PHASE 0
+Architecture and technical validation
+
+PHASE 1
+Android project + UI shell + database + settings
+
+PHASE 2
+Filesystem + Workspace + File Explorer
+
+PHASE 3
+Terminal + Process Manager
+
+PHASE 4
+LLM Provider System
+
+PHASE 5
+Agent Runtime + Tool Calling
+
+PHASE 6
+Context + Memory + Planner
+
+PHASE 7
+Permissions + Diff + Checkpoints
+
+PHASE 8
+Background Agent + Foreground Service
+
+PHASE 9
+Accessibility
+
+PHASE 10
+Termux backend
+
+PHASE 11
+Git + Code Editor
+
+PHASE 12
+Skills
+
+PHASE 13
+Plugins
+
+PHASE 14
+MCP
+
+PHASE 15
+Sub-agents
+
+PHASE 16
+Dependency/Environment Manager
+
+PHASE 17
+Local AI abstraction
+
+PHASE 18
+Diagnostics + Recovery
+
+PHASE 19
+Security Audit
+
+PHASE 20
+Performance Optimization
+
+PHASE 21
+Full Integration Testing
+
+PHASE 22
+Release Build
+
+============================================================
+114. DEFINITION OF DONE
+=======================
+
+DO NOT declare the project finished because:
+
+"the code is written."
+
+Finished means:
+
+✓ project compiles
+✓ tests pass
+✓ APK generated
+✓ APK installable
+✓ app launches
+✓ database works
+✓ provider works
+✓ Agent works
+✓ tools work
+✓ filesystem works
+✓ terminal works
+✓ sessions persist
+✓ tasks persist
+✓ background execution works within Android limits
+✓ permissions work
+✓ extension system works
+✓ skills work
+✓ MCP architecture works
+✓ diagnostics work
+✓ recovery works
+✓ Arabic RTL works
+✓ English works
+✓ security audit completed
+✓ no critical TODOs remain
+✓ no fake implementations remain
+
+============================================================
+115. CRITICAL IMPLEMENTATION RULE
+=================================
+
+WHEN YOU SAY:
+
+"I implemented X"
+
+you MUST have actually:
+
+* created the files
+* compiled the code
+* tested the feature
+* fixed discovered errors
+
+When you encounter an error:
+
+DO NOT STOP.
+
+Read the real error.
+
+Determine the cause.
+
+Modify the relevant files.
+
+Build again.
+
+Test again.
+
+Repeat until fixed or until the limitation is genuinely external.
+
+============================================================
+116. IF A DEPENDENCY IS MISSING
+===============================
+
+Do not simply write:
+
+"Install dependency X."
+
+Instead:
+
+Determine whether it can be automatically installed.
+
+If yes:
+
+install it.
+
+If not:
+
+provide a setup step.
+
+If the dependency is large:
+
+show:
+
+name
+
+version
+
+size
+
+source
+
+reason
+
+required storage
+
+Then allow installation.
+
+The application should maintain a Dependency Registry.
+
+============================================================
+117. IF ANDROID BLOCKS SOMETHING
+================================
+
+Never fake it.
+
+Implement:
+
+capability detection
+
+fallback
+
+clear explanation
+
+alternative backend
+
+For example:
+
+Filesystem:
+SAF → All Files Access → fallback
+
+Terminal:
+Root → Termux → native → unavailable
+
+UI automation:
+Accessibility → Intent → manual action
+
+============================================================
+118. AGENT QUALITY TARGET
+=========================
+
+The target is NOT:
+
+"AI chatbot with file access."
+
+The target is:
+
+"A local Android Agent Runtime capable of autonomously operating on projects,
+files, terminals, runtimes, Android interfaces, extensions, and development
+environments through a controlled, persistent, extensible tool system."
+
+Think like you are building an operating environment for an AI developer.
+
+============================================================
+119. FIRST ACTION
+=================
+
+DO NOT immediately dump code into the response.
+
+First:
+
+A. inspect the development environment
+
+B. determine available Android SDK/Gradle/JDK
+
+C. determine available build tools
+
+D. create architecture
+
+E. create project structure
+
+F. create a dependency plan
+
+G. identify Android-version constraints
+
+H. identify what can be implemented natively
+
+I. identify what requires Termux
+
+J. identify what requires Accessibility
+
+K. identify what optionally requires Root
+
+Then immediately begin implementation.
+
+============================================================
+120. FINAL RULE
+===============
+
+BUILD B AGENT.
+
+Not a demo.
+
+Not a mockup.
+
+Not a prototype.
+
+Not a chatbot.
+
+Not a collection of disconnected screens.
+
+Build one coherent Agent platform.
+
+Every subsystem must communicate through well-defined interfaces.
+
+Every capability must be discoverable.
+
+Every tool must be manageable.
+
+Every extension must be installable/removable.
+
+Every task must be persistent.
+
+Every long task must be recoverable.
+
+Every dangerous operation must be controlled.
+
+Every model claim must be verified.
+
+Every OS limitation must be acknowledged.
+
+The final result must be:
+
+B Agent
+
+A complete, extensible, Android-native autonomous AI Agent that can operate
+on the user's device as powerfully as Android actually permits.
+
+BUILD IT.
+TEST IT.
+FIX IT.
+VERIFY IT.
+PACKAGE IT.
+
+DO NOT STOP AT THE PLAN.
+
+DO NOT STOP AT THE UI.
+
+DO NOT STOP AT THE FIRST COMPILE.
+
+CONTINUE UNTIL A REAL INSTALLABLE APK IS PRODUCED.
