@@ -348,7 +348,7 @@ class FilesystemTools(private val fs: FsService) {
             queue.add(root(env))
             outer@ while (queue.isNotEmpty() && hits.size < max) {
                 val dir = queue.removeFirst()
-                val files = runCatching { dir.listFiles() }.getOrNull() ?: emptyList()
+                val files = runCatching { dir.listFiles()?.toList() }.getOrNull() ?: emptyList()
                 for (f in files) {
                     if (hits.size >= max) break@outer
                     if (f.isDirectory) {
@@ -399,7 +399,7 @@ class FilesystemTools(private val fs: FsService) {
             queue.add(root(env))
             while (queue.isNotEmpty() && hits.size < max) {
                 val dir = queue.removeFirst()
-                val files = runCatching { dir.listFiles() }.getOrNull() ?: emptyList()
+                val files = runCatching { dir.listFiles()?.toList() }.getOrNull() ?: emptyList()
                 for (f in files) {
                     if (hits.size >= max) break
                     if (f.isDirectory) continue

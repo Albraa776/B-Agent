@@ -31,10 +31,10 @@ class GitTools {
         com.bagent.app.tools.filesystem.FsService(env.context).workspaceDir(it).absolutePath
     } ?: runCatching { env.context.filesDir.absolutePath }.getOrNull()
 
-    private fun gitAvailable(env: ToolEnv): Boolean =
+    private suspend fun gitAvailable(env: ToolEnv): Boolean =
         runCatching { env.terminal.run(CommandRequest("git", listOf("--version"), timeoutMs = 15_000)).success }.getOrDefault(false)
 
-    private fun runGit(env: ToolEnv, args: List<String>, timeoutMs: Long = 60_000): ToolResult {
+    private suspend fun runGit(env: ToolEnv, args: List<String>, timeoutMs: Long = 60_000): ToolResult {
         if (!gitAvailable(env)) return ToolResult.Failure("git is not available in this environment")
         val cwd = cwd(env)
         val result = env.terminal.run(CommandRequest("git", args, cwd = cwd, timeoutMs = timeoutMs))
@@ -61,7 +61,7 @@ class GitTools {
             override val requiredPermission = perm
             override val risk = risk
             override val parameters = JsonUtil.parseObject("""{"type":"object","properties":{"repository":{"type":"string","description":"repository sub-path (default: workspace root)"},"args":{"type":"array","items":{"type":"string"},"description":"extra git arguments"}}}""")
-            override fun checkHealth(env: ToolEnv): String = if (gitAvailable(env)) "ok" else "git binary not found in this environment"
+            override suspend fun checkHealth(env: ToolEnv): String = if (gitAvailable(env)) "ok" else "git binary not found in this environment"
             override suspend fun execute(args: JsonObject, env: ToolEnv): ToolResult {
                 val repo = args["repository"]?.jsonPrimitive?.contentOrNull
                 val extra = runCatching {

@@ -44,7 +44,7 @@ abstract class ToolBase {
     open val backend: String = "builtin"
 
     /** Optional health probe so the capability map is honest. */
-    open fun checkHealth(env: ToolEnv): String = "ok"
+    open suspend fun checkHealth(env: ToolEnv): String = "ok"
 
     abstract suspend fun execute(args: JsonObject, env: ToolEnv): ToolResult
 }
