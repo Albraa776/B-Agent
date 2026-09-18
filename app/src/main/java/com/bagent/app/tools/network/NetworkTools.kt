@@ -79,7 +79,7 @@ class NetworkTools {
                 val response = Http.executeWithRetry(request, 1)
                 val code = response.code
                 val headers = buildJsonObject {
-                    response.headers.forEach { name, value -> put(name, Redactor.redact(value)) }
+                    response.headers.forEach { (name, value) -> put(name, Redactor.redact(value)) }
                 }
                 response.close()
                 ToolResult.Success(buildJsonObject {

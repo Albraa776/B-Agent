@@ -46,7 +46,7 @@ class AppContainer(private val app: Application) {
     val logger: BLogger by lazy { BLogger(database.logEntryDao(), scope) }
 
     val permissions: PermissionManager by lazy { PermissionManager(settings) }
-    val registry: ToolRegistry by lazy { ToolRegistry(database.toolDao()) }
+    val registry: ToolRegistry by lazy { ToolRegistry(database.toolDao(), scope) }
     val terminal: TerminalService by lazy {
         TerminalService(app, settings, database.processDao(), logger, scope)
     }

@@ -6,7 +6,6 @@ import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import com.bagent.app.core.database.WorkspaceEntity
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonObjectBuilder
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import java.io.File
@@ -59,26 +58,19 @@ class FsService(private val context: Context) {
         return if (path == base || path.startsWith(base + File.separator)) candidate else null
     }
 
-    fun metadata(file: File, includeHash: Boolean = false): JsonObject {
-        val b = buildJsonObject {
-            put("name", file.name)
-            put("path", file.absolutePath)
-            put("directory", file.isDirectory)
-            put("exists", file.exists())
-            put("size", file.length())
-            put("lastModified", file.lastModified())
-            put("readable", file.canRead())
-            put("writable", file.canWrite())
-        }
+    fun metadata(file: File, includeHash: Boolean = false): JsonObject = buildJsonObject {
+        put("name", file.name)
+        put("path", file.absolutePath)
+        put("directory", file.isDirectory)
+        put("exists", file.exists())
+        put("size", file.length())
+        put("lastModified", file.lastModified())
+        put("readable", file.canRead())
+        put("writable", file.canWrite())
         if (includeHash && file.isFile) {
-            putTo(b, "md5", hash(file, "MD5"))
-            putTo(b, "sha256", hash(file, "SHA-256"))
+            put("md5", hash(file, "MD5"))
+            put("sha256", hash(file, "SHA-256"))
         }
-        return b
-    }
-
-    private fun putTo(b: JsonObjectBuilder, key: String, value: String) {
-        b.put(key, value)
     }
 
     fun hash(file: File, algo: String): String {

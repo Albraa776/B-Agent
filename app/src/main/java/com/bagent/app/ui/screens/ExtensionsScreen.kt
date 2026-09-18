@@ -111,7 +111,7 @@ private fun SkillsTab(vm: MainViewModel) {
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     StatCard(label = "${skill.name} ${skill.version} • ${skill.source}", value = skill.description, modifier = Modifier.weight(1f))
-                    Column(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    Column {
                         Switch(checked = skill.enabled, onCheckedChange = { vm.toggleSkill(skill) })
                     }
                     TextButton(onClick = { vm.removeSkill(skill.id) }) { Text("Remove") }

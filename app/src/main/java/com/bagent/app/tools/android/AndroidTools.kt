@@ -197,8 +197,7 @@ class AndroidTools(private val context: Context) {
             }.getOrNull() ?: return ToolResult.Failure("invalid path")
             if (!file.isFile) return ToolResult.Failure("not a file")
             return runCatching {
-                val fileProvider = androidx.core.content.FileProvider
-                val uri = fileProvider.getUriForFile(
+                val uri = androidx.core.content.FileProvider.getUriForFile(
                     ctx(env), ctx(env).packageName + ".fileprovider", file
                 )
                 val mime = android.webkit.MimeTypeMap.getSingleton()

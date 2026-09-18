@@ -104,7 +104,7 @@ fun HomeScreen(
         }
 
         if (workspaces.isNotEmpty()) {
-            item { Section("Projects") }
+            item { Section("Projects") { } }
             workspaces.take(5).forEach { ws ->
                 item {
                     StatCard(ws.name, ws.rootUriOrPath, monospace = true, accent = MaterialTheme.colorScheme.onSurface)
@@ -113,7 +113,7 @@ fun HomeScreen(
         }
 
         if (sessions.isNotEmpty()) {
-            item { Section("Recent sessions") }
+            item { Section("Recent sessions") { } }
             sessions.sortedByDescending { it.updatedAt }.take(5).forEach { session ->
                 item {
                     StatCard("$session", "")

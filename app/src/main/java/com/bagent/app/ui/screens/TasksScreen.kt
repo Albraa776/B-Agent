@@ -82,8 +82,8 @@ private fun TaskDetail(
     vm: MainViewModel,
     task: com.bagent.app.core.database.AgentTaskEntity
 ) {
-    val steps by vm.container.tasks.steps(task.id).collectAsStateWithLifecycle()
-    val logs by vm.container.logger.recent.collectAsStateWithLifecycle()
+    val steps by vm.container.tasks.steps(task.id).collectAsStateWithLifecycle(emptyList())
+    val logs by vm.container.logger.recent.collectAsStateWithLifecycle(emptyList())
     val taskLogs = logs.filter { it.taskId == task.id }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {

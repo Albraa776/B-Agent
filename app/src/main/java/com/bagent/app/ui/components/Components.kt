@@ -106,7 +106,7 @@ fun StatusChip(state: AgentState) {
         AgentState.THINKING, AgentState.PLANNING -> "working" to MaterialTheme.colorScheme.tertiary
         AgentState.EXECUTING_TOOL, AgentState.WAITING_FOR_PROCESS, AgentState.OBSERVING,
         AgentState.RECOVERING -> "working" to MaterialTheme.colorScheme.primary
-        AgentState.WAITING_FOR_PERMISSION -> "waiting" to MaterialTheme.colorScheme.warning
+        AgentState.WAITING_FOR_PERMISSION -> "waiting" to MaterialTheme.colorScheme.tertiary
         AgentState.PAUSED -> "paused" to MaterialTheme.colorScheme.onSurfaceVariant
         AgentState.COMPLETED -> "completed" to MaterialTheme.colorScheme.secondary
         AgentState.FAILED, AgentState.BLOCKED -> "failed" to MaterialTheme.colorScheme.error
@@ -137,7 +137,7 @@ fun PermissionSheet(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.warning)
+            Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.tertiary)
             Text(
                 reason,
                 style = MaterialTheme.typography.bodySmall,

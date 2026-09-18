@@ -4,7 +4,9 @@ import com.bagent.app.core.database.ToolDao
 import com.bagent.app.core.database.ToolEntity
 import com.bagent.app.core.model.ToolSchema
 import com.bagent.app.core.util.JsonUtil
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -14,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Dynamic tool catalog. Tools can be registered, unregistered, enabled,
  * disabled and reconfigured at runtime without rebuilding the application.
  */
-class ToolRegistry(private val dao: ToolDao) {
+class ToolRegistry(private val dao: ToolDao, private val scope: CoroutineScope) {
 
     private val registered = ConcurrentHashMap<String, ToolBase>()
 
@@ -23,30 +25,32 @@ class ToolRegistry(private val dao: ToolDao) {
     fun register(tool: ToolBase, persist: Boolean = true) {
         registered[tool.id] = tool
         if (persist) {
-            runCatching {
-                dao.upsert(
-                    ToolEntity(
-                        id = tool.id,
-                        name = tool.name,
-                        description = tool.description,
-                        category = tool.category,
-                        version = tool.version,
-                        enabled = true,
-                        installed = true,
-                        permission = tool.requiredPermission.name,
-                        risk = tool.risk.name,
-                        backend = tool.backend,
-                        timeoutMs = tool.timeoutMs,
-                        metadataJson = tool.parameters?.toString() ?: "{}"
+            scope.launch {
+                runCatching {
+                    dao.upsert(
+                        ToolEntity(
+                            id = tool.id,
+                            name = tool.name,
+                            description = tool.description,
+                            category = tool.category,
+                            version = tool.version,
+                            enabled = true,
+                            installed = true,
+                            permission = tool.requiredPermission.name,
+                            risk = tool.risk.name,
+                            backend = tool.backend,
+                            timeoutMs = tool.timeoutMs,
+                            metadataJson = tool.parameters?.toString() ?: "{}"
+                        )
                     )
-                )
+                }
             }
         }
     }
 
     fun unregister(toolId: String, removeFromDb: Boolean = true) {
         registered.remove(toolId)
-        if (removeFromDb) runCatching { dao.delete(toolId) }
+        if (removeFromDb) scope.launch { runCatching { dao.delete(toolId) } }
     }
 
     suspend fun enable(toolId: String, enabled: Boolean) {

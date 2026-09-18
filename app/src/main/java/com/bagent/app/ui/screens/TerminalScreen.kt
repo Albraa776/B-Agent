@@ -71,7 +71,7 @@ fun TerminalScreen(vm: MainViewModel) {
                     "Running processes (${running.size})",
                     running.joinToString("\n") { "#${it.pid} ${it.command}" },
                     monospace = true,
-                    accent = MaterialTheme.colorScheme.warning
+                    accent = MaterialTheme.colorScheme.tertiary
                 )
             }
         }

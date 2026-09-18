@@ -67,7 +67,7 @@ class ToolExecutor(
         return result
     }
 
-    private fun recordFailure(
+    private suspend fun recordFailure(
         tool: ToolBase,
         env: ToolEnv,
         arguments: String,

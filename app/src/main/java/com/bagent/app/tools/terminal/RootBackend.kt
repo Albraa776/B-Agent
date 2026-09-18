@@ -31,7 +31,7 @@ class RootBackend(private val isEnabled: suspend () -> Boolean = { true }) : Ter
 
     override fun describe(): String = "Root shell via ${findSu() ?: "su"}; requires user-enabled root operation"
 
-    override fun run(request: CommandRequest): CommandResult = withContext(Dispatchers.IO) {
+    override suspend fun run(request: CommandRequest): CommandResult = withContext(Dispatchers.IO) {
         val started = now()
         val su = findSu()
         if (su == null) {
@@ -63,7 +63,7 @@ class RootBackend(private val isEnabled: suspend () -> Boolean = { true }) : Ter
                 stderr = stderr.toString().trim(),
                 startTime = started,
                 durationMs = now() - started,
-                pid = runCatching { process.pid().toLong() }.getOrDefault(-1L).let { if (it > 0) it else null },
+                pid = processPid(process).let { if (it > 0) it else null },
                 timedOut = !finished
             )
         } catch (e: Exception) {
@@ -91,9 +91,9 @@ class RootBackend(private val isEnabled: suspend () -> Boolean = { true }) : Ter
         override val command: String,
         override val cwd: String?
     ) : RunningProcess {
-        override val id: Long = RID.nextAndGet()
+        override val id: Long = RID.getAndIncrement()
         override val startedAt: Long = now()
-        override val pid: Long = runCatching { process.pid().toLong() }.getOrDefault(-1L)
+        override val pid: Long = processPid(process)
         override fun stop() {
             process.destroy()
             if (!process.waitFor(2, TimeUnit.SECONDS)) process.destroyForcibly()

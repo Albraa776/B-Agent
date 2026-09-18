@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,7 @@ data class RunningProcessInfo(
 ) {
     val id: Long get() = handle.id
     val command: String get() = handle.command
-    val pid: Long get() = handle.pid
+    val pid: Long? get() = handle.pid
     val startedAt: Long get() = handle.startedAt
     val isAlive: Boolean get() = handle.isAlive
 }
@@ -74,7 +75,7 @@ class TerminalService(
         return result
     }
 
-    fun start(request: CommandRequest): RunningProcess? {
+    suspend fun start(request: CommandRequest): RunningProcess? {
         refreshSelection()
         val backend = _selected.value
         val handle = backend.start(request) ?: return null
@@ -82,9 +83,9 @@ class TerminalService(
         scope.launch {
             persistEntity(
                 ProcessEntity(
-                    pid = handle.pid,
+                    pid = handle.pid ?: -1L,
                     command = Redactor.redact(handle.command).take(300),
-                    cwd = handle.cwd,
+                    cwd = handle.cwd ?: "",
                     status = "running",
                     startedAt = handle.startedAt
                 )

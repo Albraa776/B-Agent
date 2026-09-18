@@ -38,15 +38,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     val runtimeState: StateFlow<RuntimeState> = container.runtime.state
 
-    val sessions = container.sessions.sessions
-    val tasks = container.tasks.tasks
-    val capabilities = container.environment.capabilities
-    val tools = container.registry.all
-    val skills = container.skills.skills
-    val plugins = container.plugins.plugins
-    val mcpServers = container.mcp.servers
-    val logs = container.logger.recent
-    val workspaces = container.database.workspaceDao().observeAll()
+    val sessions = container.sessions.sessions.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val tasks = container.tasks.tasks.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val capabilities = container.environment.capabilities.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val tools = container.registry.all.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val skills = container.skills.skills.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val plugins = container.plugins.plugins.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val mcpServers = container.mcp.servers.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val logs = container.logger.recent.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val workspaces = container.database.workspaceDao().observeAll().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     private val _providers = MutableStateFlow<List<ProviderConfig>>(emptyList())
     val providers: StateFlow<List<ProviderConfig>> = _providers.asStateFlow()

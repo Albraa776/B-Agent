@@ -39,7 +39,7 @@ class TermuxBackend(private val context: Context) : TerminalBackend {
         return if (isAvailable()) "Termux runtime accessible at ${termuxBinDir().path}" else "Termux installed but its runtime is not reachable from this app"
     }
 
-    override fun run(request: CommandRequest): CommandResult = withContext(Dispatchers.IO) {
+    override suspend fun run(request: CommandRequest): CommandResult = withContext(Dispatchers.IO) {
         val started = now()
         if (!isAvailable()) {
             return@withContext CommandResult(null, "", "", started, 0L, error = describe())
@@ -74,7 +74,7 @@ class TermuxBackend(private val context: Context) : TerminalBackend {
                 stderr = stderr.toString().trim(),
                 startTime = started,
                 durationMs = now() - started,
-                pid = runCatching { process.pid().toLong() }.getOrDefault(-1L).let { if (it > 0) it else null },
+                pid = processPid(process).let { if (it > 0) it else null },
                 timedOut = !finished
             )
         } catch (e: Exception) {
@@ -105,9 +105,9 @@ class TermuxBackend(private val context: Context) : TerminalBackend {
         override val command: String,
         override val cwd: String?
     ) : RunningProcess {
-        override val id: Long = TID.nextAndGet()
+        override val id: Long = TID.getAndIncrement()
         override val startedAt: Long = now()
-        override val pid: Long = runCatching { process.pid().toLong() }.getOrDefault(-1L)
+        override val pid: Long = processPid(process)
         override fun stop() {
             process.destroy()
             if (!process.waitFor(2, TimeUnit.SECONDS)) process.destroyForcibly()

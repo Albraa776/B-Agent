@@ -6,6 +6,7 @@ import com.bagent.app.core.logging.BLogger
 import com.bagent.app.core.model.PermAction
 import com.bagent.app.core.model.RiskLevel
 import com.bagent.app.core.settings.SettingsRepository
+import com.bagent.app.tools.terminal.TerminalService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject

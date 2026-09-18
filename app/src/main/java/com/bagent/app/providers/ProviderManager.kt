@@ -94,7 +94,7 @@ class ProviderManager(
             }
             if (!failed) return config
             logger.warn("provider_failed: ${config.name} - $lastError")
-            val next = chain.getOrNull(index + 1) ?: return@forEach
+            val next = chain.getOrNull(index + 1) ?: return@forEachIndexed
             onEvent(ProviderEvent.Delta("\n\n_[provider ${config.name} failed: $lastError - falling back to ${next.name}]_\n\n"))
         }
         error(lastError)

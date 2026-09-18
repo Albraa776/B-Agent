@@ -25,7 +25,7 @@ class NativeProcessBackend(private val context: Context) : TerminalBackend {
 
     override fun describe(): String = "Native Android process execution via ProcessBuilder"
 
-    override fun run(request: CommandRequest): CommandResult = withContext(Dispatchers.IO) {
+    override suspend fun run(request: CommandRequest): CommandResult = withContext(Dispatchers.IO) {
         val started = now()
         val pid = AtomicLong(-1L)
         val outputBuffer = StringBuilder()
@@ -35,7 +35,7 @@ class NativeProcessBackend(private val context: Context) : TerminalBackend {
         try {
             val pb = buildProcess(request)
             val process = pb.start()
-            pid.set(pidOf(process))
+            pid.set(processPid(process))
 
             val stdoutThread = Thread {
                 process.inputStream.bufferedReader().forEachLine { line ->
@@ -94,7 +94,7 @@ class NativeProcessBackend(private val context: Context) : TerminalBackend {
             NativeRunningProcess(
                 ownerScope = null,
                 process = process,
-                processPid = pidOf(process),
+                processPid = processPid(process),
                 command = request.command,
                 cwd = request.cwd
             )
@@ -129,13 +129,6 @@ class NativeProcessBackend(private val context: Context) : TerminalBackend {
         return dirs.distinct().filter { File(it).isDirectory }.joinToString(":")
     }
 
-    private fun pidOf(process: Process): Long =
-        try {
-            runCatching { process.pid().toLong() }.getOrDefault(-1L)
-        } catch (e: Exception) {
-            -1L
-        }
-
     companion object {
         private const val DEFAULT_SHELL = "/system/bin/sh"
         private const val PREFIX_BIN = "/data/data/com.termux/files/usr"
@@ -149,9 +142,9 @@ class NativeProcessBackend(private val context: Context) : TerminalBackend {
         override val command: String,
         override val cwd: String?
     ) : RunningProcess {
-        override val id: Long = NET.nextAndGet()
+        override val id: Long = NET.getAndIncrement()
         override val startedAt: Long = now()
-        override val pid: Long = if (processPid >= 0) processPid else runCatching { process.pid().toLong() }.getOrDefault(-1L)
+        override val pid: Long = if (processPid >= 0) processPid else processPid(process)
         override fun stop() {
             process.destroy()
             if (!process.waitFor(2, java.util.concurrent.TimeUnit.SECONDS)) process.destroyForcibly()

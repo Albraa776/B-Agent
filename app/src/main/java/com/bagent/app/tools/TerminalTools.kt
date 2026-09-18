@@ -6,6 +6,7 @@ import com.bagent.app.core.model.RiskLevel
 import com.bagent.app.core.util.JsonUtil
 import com.bagent.app.core.util.Redactor
 import com.bagent.app.tools.terminal.CommandRequest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
@@ -14,7 +15,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 /** Real command execution, process inspection and binary detection tools. */
-class TerminalTools(context: Context) {
+class TerminalTools(private val context: Context) {
 
     fun all(): List<ToolBase> = listOf(
         RunCommand(context), ListProcesses(), StopProcess(), CheckBinary()
@@ -36,7 +37,7 @@ class TerminalTools(context: Context) {
             val command = args["command"]?.jsonPrimitive?.contentOrNull ?: return ToolResult.Failure("missing command")
             val cwd = args["cwd"]?.jsonPrimitive?.contentOrNull
             val timeout = (args["timeoutMs"]?.jsonPrimitive?.contentOrNull?.toLongOrNull()
-                ?: env.settings.commandTimeoutSec.run { kotlinx.coroutines.flow.first { it } * 1000L }).coerceAtLeast(5_000L)
+                ?: (env.settings.commandTimeoutSec.firstOrNull() ?: 120L) * 1000L).coerceAtLeast(5_000L)
             val shell = args["shell"]?.jsonPrimitive?.contentOrNull != "false"
             val resolvedCwd = cwd?.takeIf { it.isNotBlank() } ?: env.workspace?.let { ws ->
                 com.bagent.app.tools.filesystem.FsService(context).workspaceDir(ws).absolutePath
@@ -81,7 +82,7 @@ class TerminalTools(context: Context) {
                     running.forEach { p ->
                         add(buildJsonObject {
                             put("id", p.id)
-                            put("pid", p.pid)
+                            put("pid", p.pid ?: -1L)
                             put("command", Redactor.redact(p.command))
                             put("startedAt", p.startedAt)
                             put("alive", p.isAlive)

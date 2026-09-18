@@ -2,6 +2,15 @@ package com.bagent.app.tools.terminal
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Best-effort process id lookup. Android does not expose `Process.pid()`,
+ * so reflection is attempted and -1 is returned when unavailable.
+ */
+internal fun processPid(process: Process): Long = runCatching {
+    val method = process.javaClass.getDeclaredMethod("pid").apply { isAccessible = true }
+    (method.invoke(process) as? Long) ?: -1L
+}.getOrDefault(-1L)
+
 /** A command to execute. */
 data class CommandRequest(
     val command: String,
